@@ -2,11 +2,13 @@
 
 package javatest;
 
+import java.awt.Panel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.JButton;
 
 /**
  * created by pfliu on 2018/11/11
@@ -45,6 +47,5 @@ public class InputTest {
     System.out.println(i);
     System.out.println(f);
     System.out.println(s);
-    ConcurrentHashMap
   }
 }

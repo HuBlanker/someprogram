@@ -6,7 +6,7 @@ book = xlrd.open_workbook(u"/home/mobvoi/Downloads/微信公众号.xlsx")
 sheet = book.sheet_by_index(1)
 
 # 建立mysql连接
-database = MySQLdb.connect(host='127.0.0.1', user='root', passwd='LPFlpf2580', db='pitaya', port=3306,
+database = MySQLdb.connect(host='127.0.0.1', user='root', passwd='******', db='pitaya', port=3306,
                            use_unicode=True, charset="utf8")
 # 获得游标对象, 用于逐行遍历数据库数据
 cursor = database.cursor()
