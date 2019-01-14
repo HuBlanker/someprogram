@@ -11,9 +11,9 @@ public class SortMain {
 
   public static void main(String[] args) {
     SortMain sortMain = new SortMain();
-    sortMain.baseSort = new SelectionSort();
-    sortMain.baseSort.sort(input);
-    printArr(input);
+    sortMain.baseSort = new RadixSort();
+    int [] result = sortMain.baseSort.sort(input);
+    printArr(result);
 
   }
 
@@ -22,7 +22,5 @@ public class SortMain {
       System.out.print(input[i]);
       System.out.print(",");
     }
-
-
   }
 }
