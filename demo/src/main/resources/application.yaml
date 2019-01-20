@@ -1,0 +1,27 @@
+
+server:
+  port: 9999
+
+spring:
+  profiles:
+    active: local
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 0
+      initial-size: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      pool-name: NezhaHikariCP
+      test-connection-on-checkout: true
+  flyway:
+    enabled: false
+    encoding: utf-8
+    locations: classpath:migration
+    table: schema_version
+    baseline-on-migrate: true
+    validate-on-migrate: false
+  jpa:
+    database: MYSQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
