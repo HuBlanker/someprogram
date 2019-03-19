@@ -1,7 +1,6 @@
-// Copyright 2018 Mobvoi Inc. All Rights Reserved.
-
 package com.huyan.demo.controller;
 
+import com.huyan.demo.config.CheckSource;
 import com.huyan.demo.service.AnalyticsService;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -9,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,9 +22,10 @@ public class StatusController {
   @Resource
   private AnalyticsService analyticsService;
 
+  @CheckSource(sources = {"huyan", "huihui"})
   @GetMapping(value = "/status")
-  public Object status() throws Exception {
-    return  "哈哈哈";
+  public Object status(@RequestParam("source") String source) {
+    return "哈哈哈";
   }
 
   public static Random random = new Random();

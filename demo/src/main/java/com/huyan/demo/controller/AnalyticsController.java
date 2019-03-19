@@ -43,12 +43,12 @@ public class AnalyticsController {
 //    logger.info("kmp request,big=%s,small=%s", big, small);
 //    BaseResponse baseResponse = new BaseResponse();
 //    try {
-//      baseResponse.result = analyticsService.stringIndex(big, small);
+//      baseResponse.money = analyticsService.stringIndex(big, small);
 //    } catch (Exception e) {
 //      logger.info("kmp error,error=%s", e);
 //      return new BaseResponse(BaseError.FAIL);
 //    }
-//    logger.info("kmp response,result=%s", baseResponse);
+//    logger.info("kmp response,money=%s", baseResponse);
 //    return baseResponse;
 //  }
 

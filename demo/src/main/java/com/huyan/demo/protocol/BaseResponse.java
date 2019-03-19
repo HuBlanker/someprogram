@@ -48,7 +48,7 @@ public class BaseResponse {
 
   @Override
   public String toString() {
-    return "code=" + errCode + ", msg=" + errMsg + ", result = " + ((result != null) ? result
+    return "code=" + errCode + ", msg=" + errMsg + ", money = " + ((result != null) ? result
         .toString() : "");
   }
 }
