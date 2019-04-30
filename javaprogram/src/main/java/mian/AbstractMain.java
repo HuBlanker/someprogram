@@ -5,6 +5,9 @@ import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * Created by pfliu on 2019/04/07.
  */
@@ -17,7 +20,7 @@ public abstract class AbstractMain {
     )
     protected boolean help = false;
 
-    public abstract void run();
+    public abstract void run() throws InterruptedException, IOException, ClassNotFoundException, SQLException;
 
     protected boolean preRun() {
         return true;
