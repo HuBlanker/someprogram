@@ -189,9 +189,9 @@ public class MysqlBinLogListener extends AbstractMain implements BinaryLogClient
 
     public static void main(String[] args) throws Exception {
         Conf conf = new Conf();
-        conf.host = "hostname";
+        conf.host = "101.200.47.120";
         conf.port = 3306;
-        conf.username = conf.passwd = "hhsgsb";
+        conf.username = conf.passwd = "huihui";
 
         MysqlBinLogListener mysqlBinLogListener = new MysqlBinLogListener(conf);
         mysqlBinLogListener.parseArgsAndRun(args);
