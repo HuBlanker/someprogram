@@ -15,7 +15,7 @@ public class BlockingQueueTest extends AbstractMain {
     }
 
     @Override
-    public void run() throws InterruptedException {
+    public void run() {
         Thread consume = new Thread(() -> {
             try {
                 t1();

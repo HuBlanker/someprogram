@@ -1,0 +1,10 @@
+task :default => :push
+
+
+desc "deploy the jar to blog and run it"
+task :deploy do
+     sh 'mvn clean package -Dmaven.test.skip=true'
+     sh 'scp target/lucene-demo-0.0.1-SNAPSHOT.jar blog:/usr/panfeng'
+     sh 'ssh blog " cd /usr/panfeng/blog_backend && ./run.sh"'
+end
+

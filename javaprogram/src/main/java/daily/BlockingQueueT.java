@@ -60,7 +60,7 @@ public class BlockingQueueT extends AbstractMain {
     }
 
     @Override
-    public void run() throws InterruptedException {
+    public void run() {
         BlockingQueueT bt = new BlockingQueueT();
 
         // 生成这线程,生成1000个元素

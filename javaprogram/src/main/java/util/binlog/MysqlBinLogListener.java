@@ -6,16 +6,15 @@ import com.github.shyiko.mysql.binlog.event.EventType;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
 import com.github.shyiko.mysql.binlog.event.deserialization.EventDeserializer;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import mian.AbstractMain;
 import org.kohsuke.args4j.Option;
-import sun.tools.jconsole.Worker;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -35,7 +34,7 @@ public class MysqlBinLogListener extends AbstractMain implements BinaryLogClient
     private final ExecutorService consumer;
 
     // 存放每张数据表对应的listener
-    private Map<String, List<BinLogListener>> listeners;
+    private Multimap<String, BinLogListener> listeners;
 
     private Conf conf;
     private Map<String, Map<String, Colum>> dbTableCols;
@@ -53,19 +52,28 @@ public class MysqlBinLogListener extends AbstractMain implements BinaryLogClient
         this.parseClient = client;
         this.queue = new ArrayBlockingQueue<>(1024);
         this.conf = conf;
-        listeners = new ConcurrentHashMap<>();
+        listeners = ArrayListMultimap.create();
         dbTableCols = new ConcurrentHashMap<>();
         this.consumer = Executors.newFixedThreadPool(consumerThreads);
     }
 
 
     @Override
-    public void run() throws IOException, ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        // 打开链接
-        Connection connection = DriverManager.getConnection("jdbc:mysql://" + conf.host + ":" + conf.port, conf.username, conf.passwd);
-        Map<String, Colum> cols = getColMap(connection, "pf", "student");
-        System.out.println(cols);
+    public void run()  {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // 打开链接
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection("jdbc:mysql://" + conf.host + ":" + conf.port, conf.username, conf.passwd);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Map<String, Colum> cols = getColMap(connection, "pf", "student");
+            System.out.println(cols);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -105,9 +113,7 @@ public class MysqlBinLogListener extends AbstractMain implements BinaryLogClient
         dbTableCols.put(dbTable, cols);
 
         // 保存当前注册的listener
-        List<BinLogListener> list = listeners.getOrDefault(dbTable, new ArrayList<>());
-        list.add(listener);
-        listeners.put(dbTable, list);
+        listeners.put(dbTable, listener);
     }
 
     private static String getdbTable(String db, String table) {
@@ -196,7 +202,7 @@ public class MysqlBinLogListener extends AbstractMain implements BinaryLogClient
         MysqlBinLogListener mysqlBinLogListener = new MysqlBinLogListener(conf);
         mysqlBinLogListener.parseArgsAndRun(args);
         mysqlBinLogListener.regListener("pf", "student", item -> {
-            System.out.println(new String((byte[])item.getAfter().get("name")));
+            System.out.println(new String((byte[]) item.getAfter().get("name")));
             logger.info("insert into {}, value = {}", item.getDbTable(), item.getAfter());
         });
         mysqlBinLogListener.regListener("pf", "teacher", item -> System.out.println("teacher ===="));

@@ -20,7 +20,7 @@ public abstract class AbstractMain {
     )
     protected boolean help = false;
 
-    public abstract void run() throws InterruptedException, IOException, ClassNotFoundException, SQLException;
+    public abstract void run();
 
     protected boolean preRun() {
         return true;

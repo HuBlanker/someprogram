@@ -1,5 +1,6 @@
 package com.huyan.lucenedemo.controller;
 
+import com.huyan.lucenedemo.access.NginxLogListener;
 import com.huyan.lucenedemo.index.Index;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ public class IndexController {
 
     @Resource
     private Index index;
+
+    @Resource
+    private NginxLogListener logListener;
 
 
     @GetMapping("/rebuild")

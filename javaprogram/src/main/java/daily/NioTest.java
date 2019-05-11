@@ -19,17 +19,21 @@ public class NioTest extends AbstractMain {
     }
 
     @Override
-    public void run() throws IOException {
+    public void run()  {
         Path source = FileSystems.getDefault().getPath("/Users/pfliu/study/test/source");
         Path target = FileSystems.getDefault().getPath("/Users/pfliu/study/test/target");
 
-        Files.lines(source).forEach(per -> {
-            logger.info("line: {}", per);
-            try {
-                Files.write(target, Collections.singleton(per), StandardOpenOption.APPEND);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            Files.lines(source).forEach(per -> {
+                logger.info("line: {}", per);
+                try {
+                    Files.write(target, Collections.singleton(per), StandardOpenOption.APPEND);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

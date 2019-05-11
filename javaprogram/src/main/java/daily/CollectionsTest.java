@@ -14,7 +14,7 @@ import java.util.*;
 public class CollectionsTest extends AbstractMain {
     @Override
     public void run() {
-        List<Integer> list = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         List<Integer> umList = Collections.unmodifiableList(list);
 
         logger.info(umList.toString());
@@ -27,24 +27,33 @@ public class CollectionsTest extends AbstractMain {
 
         ImmutableList.Builder<String> bu = ImmutableList.builder();
 
-        ImmutableCollection
-
-
         list.add(2);
         logger.info("l1:" + l1.toString());
         logger.info("list:" + list.toString());
 
 
-
         logger.info("aa :" + li.toString());
 
 
-
-
-
-        }
+    }
 
     public static void main(String[] args) {
         new CollectionsTest().parseArgsAndRun(args);
+
+        putIt("pf","2019-05-01");
+        int i =0;
     }
+
+    static Map<String, List<String>> userSign = new HashMap<>();
+
+    public static void putIt(String name, String date) {
+        List<String> dates = userSign.getOrDefault(name, new ArrayList<>());
+        if (!dates.contains(date)) {
+            dates.add(date);
+        }
+        userSign.put(name, dates);
+    }
+
+
+
 }
