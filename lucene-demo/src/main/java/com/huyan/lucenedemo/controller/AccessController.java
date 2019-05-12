@@ -1,6 +1,7 @@
 package com.huyan.lucenedemo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.huyan.lucenedemo.service.AccessService;
 import com.huyan.lucenedemo.util.JedisCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
+
+import javax.annotation.Resource;
 
 /**
  * Created by pfliu on 2019/05/08.
@@ -28,6 +31,9 @@ public class AccessController {
     @Value("${redis.url}")
     private String redisUrl;
 
+    @Resource
+    private AccessService service;
+
     @GetMapping("/count")
     public String access(@RequestParam("s") String s, @RequestParam("callback") String callback) {
 
@@ -43,5 +49,11 @@ public class AccessController {
             e.printStackTrace();
         }
         return callback + "(" + zeroJson.toJSONString() + ")";
+    }
+
+
+    @GetMapping("/admin")
+    public String admin() {
+        return service.admin();
     }
 }
