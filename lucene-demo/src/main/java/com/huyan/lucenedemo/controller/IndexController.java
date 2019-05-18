@@ -19,10 +19,6 @@ public class IndexController {
     @Resource
     private Index index;
 
-    @Resource
-    private NginxLogListener logListener;
-
-
     @GetMapping("/rebuild")
     public String indexRebuild() throws IOException {
         index.create();

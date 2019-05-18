@@ -2,15 +2,18 @@ package com.huyan.lucenedemo.index;
 
 import com.huyan.lucenedemo.Model.SearchArticleVO;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.*;
+import org.apache.lucene.search.highlight.Scorer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.lionsoul.jcseg.analyzer.JcsegAnalyzer;
+import org.lionsoul.jcseg.analyzer.JcsegFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +22,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.FileSystems;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,7 +121,6 @@ public class Index {
     }
 
     private void addFile(IndexWriter indexWriter, File file) throws IOException {
-        // 通过IndexWriter来创建索引
         // 索引库里面的数据 要遵守一定的结构（索引结构，document）
         Document doc = new Document();
         /**
@@ -155,9 +155,9 @@ public class Index {
     }
 
 
-    public List<SearchArticleVO> search(String target) throws IOException {
+    public List<SearchArticleVO> search(String target) throws IOException, InvalidTokenOffsetsException {
 
-        List<SearchArticleVO> result = new ArrayList<>();
+        Set<SearchArticleVO> result = new HashSet<>();
         String[] fields = {"title", "tags", "content"};
         for (String field : fields) {
             paddingResultByField(target, result, field);
@@ -166,26 +166,31 @@ public class Index {
             }
         }
 
-        return result;
+        return new ArrayList<>(result);
     }
 
-    private void paddingResultByField(String target, List<SearchArticleVO> result, String field) throws IOException {
+    private void paddingResultByField(String target, Set<SearchArticleVO> result, String field) throws IOException, InvalidTokenOffsetsException {
         // 索引存放的位置...
         Directory d = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
 
-        // 通过indexSearcher去检索索引目录
         IndexReader indexReader = DirectoryReader.open(d);
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
-        // 这是一个搜索条件，根据这个搜索条件我们来进行查找
-        // term是根据哪个字段进行检索，以及字段对应值
-        //================================================
         Query query = new TermQuery(new Term(field, target));
 
-        // 搜索先搜索索引目录
         // 找到符合条件的前100条数据
         TopDocs topDocs = indexSearcher.search(query, 100);
         logger.info("search keyword = {}, getNum = {}", target, topDocs.totalHits);
+
+        QueryScorer scorer = new QueryScorer(query);
+        Fragmenter f = new SimpleSpanFragmenter(scorer);
+        SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color='red'>", "</font></b>");
+
+        Highlighter highlighter = new Highlighter(simpleHTMLFormatter, scorer);
+
+        //设置片段
+        highlighter.setTextFragmenter(f);
+
         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
         for (ScoreDoc scoreDoc : scoreDocs) {
             //得分采用的是VSM算法
@@ -199,7 +204,7 @@ public class Index {
             logger.info("get article name = {}", title);
 
             String tagStr = document.get("tags");
-            String content = document.get("content");
+            String content = document.get("content").replaceAll("---\n[\\s\\S]*---\n", "");
             String categoriesStr = document.get("categories");
 
             List<String> tagList = Stream.of(tagStr.split(",")).collect(Collectors.toList());
@@ -214,9 +219,13 @@ public class Index {
 
             String url = "http://huyan.couplecoders.tech/" + cateUrl.toLowerCase() + dateUrl + title;
 
-            int firstIndex = content.indexOf(target);
 
-            String targetStr = content.substring(firstIndex - 15 < 0 ? 0 : firstIndex - 15, firstIndex + 15 > content.length() ? content.length() - 1 : firstIndex + 15).replaceAll("\n", "");
+            TokenStream tokenStream = new JcsegAnalyzer(1).tokenStream("desc", new StringReader(content));
+
+            //获取最高的片段
+            String targetStr = highlighter.getBestFragment(tokenStream, content);
+            System.out.println(targetStr);
+
 
             result.add(SearchArticleVO.builder()
                     .title(title).content(content)
