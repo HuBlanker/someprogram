@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Created by pfliu on 2019/05/16.
@@ -24,7 +25,7 @@ public class GsonTest {
         JsonArray a = parser.parse(i1).getAsJsonArray();
         System.out.println(a.get(0).getAsString());
 
-
+        ConcurrentSkipListMap<String, String> kk = new ConcurrentSkipListMap<>();
 
 //        // 从json字符串拿到java对象并且拿到某些字段
 //        String input = "{\"name\": \"huyanshi\", \"age\": 2}";
