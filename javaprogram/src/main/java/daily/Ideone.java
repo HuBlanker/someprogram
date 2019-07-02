@@ -1,5 +1,11 @@
 package daily;
 
+import util.Ticker;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,6 +53,8 @@ class Ideone {
             toIndex += fromIndex;
 
             result.add(maxOfSub);
+            Ticker ticker = new Ticker();
+
         }
         int lastMax = numbers.subList(fromIndex, numbers.size()).stream().max(Integer::compareTo).get();
         if (lastMax > 0) {
@@ -63,6 +71,11 @@ class Ideone {
 class H {
 
     public static void main(String[] args) {
-        new H();
+        System.out.println(String.format("wode %s, 90%%!","zz"));
+    }
+
+
+    private int getTN(int now) {
+        return Period.between(LocalDate.now().minusDays(3), LocalDate.now()).getDays();
     }
 }

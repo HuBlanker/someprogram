@@ -1,13 +1,11 @@
 package daily;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -18,20 +16,29 @@ public class GsonTest {
 
     public static void main(String[] args) {
         Gson gson = new Gson();
-        JsonParser parser = new JsonParser();
+        long dayBefore = ((int) (System.currentTimeMillis() / 1000)) - 24 * 60 * 60;
+        System.out.println(dayBefore);
 
-        String i1 = "[\"wo\"]";
 
-        JsonArray a = parser.parse(i1).getAsJsonArray();
-        System.out.println(a.get(0).getAsString());
+//        Map<Integer, Integer> testMap = new HashMap<>();
+//        testMap.put(1, 1);
+//        Integer i = testMap.get((long)1);
+//        System.out.println(i);
 
-        ConcurrentSkipListMap<String, String> kk = new ConcurrentSkipListMap<>();
-
+//        JsonParser parser = new JsonParser();
+//
+//        String i1 = "[\"wo\"]";
+//
+//        JsonArray a = parser.parse(i1).getAsJsonArray();
+//        System.out.println(a.get(0).getAsString());
+//
+//        ConcurrentSkipListMap<String, String> kk = new ConcurrentSkipListMap<>();
+//
 //        // 从json字符串拿到java对象并且拿到某些字段
-//        String input = "{\"name\": \"huyanshi\", \"age\": 2}";
+//        String input = "{\"name\": \"huyanshi\", \"age_type\": 2}";
 //        User user = gson.fromJson(input, User.class);
 //        System.out.println(user.name);
-//        System.out.println(user.age);
+//        System.out.println(user.ageType);
 //
 //        //从json字符串拿到json对象并且获取某些字段
 //        JsonObject jo = parser.parse(input).getAsJsonObject();
@@ -65,17 +72,10 @@ public class GsonTest {
     }
 
 
-    private static class User {
-        @SerializedName(value = "nn")
+    class User {
         String name;
-        int age;
-
-        @Override
-        public String toString() {
-            return "User{" +
-                    "name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
-        }
+        int ageType;
     }
+
+
 }
