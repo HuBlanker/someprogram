@@ -1,6 +1,5 @@
-
 class Solution:
-    def binary_search(self,arr,target):
+    def binary_search(self, arr, target):
         low = 0
         high = len(arr) - 1
         while low <= high:
@@ -13,7 +12,7 @@ class Solution:
                 low = mid + 1
         return
 
-    def binary_search2(self ,arr , target):
+    def binary_search2(self, arr, target):
         low = 0
         high = len(arr) - 1
         while low < high:
@@ -24,9 +23,9 @@ class Solution:
                 low = mid + 1
         if arr[high] == target:
             return high
-        return -1       
+        return -1
 
-    def binary_search3(self ,arr , target):
+    def binary_search3(self, arr, target):
         low = 0
         high = len(arr) - 1
         while low < high:
@@ -37,9 +36,9 @@ class Solution:
                 high = mid - 1
         if arr[high] == target:
             return high
-        return -1   
+        return -1
 
-    def binary_search4(self ,arr , target, flag):
+    def binary_search4(self, arr, target, flag):
         low = 0
         high = len(arr) - 1
         while low < high:
@@ -47,7 +46,7 @@ class Solution:
             if arr[mid] == target:
                 if flag == 0:
                     high = mid
-                else :
+                else:
                     low = mid
             elif arr[mid] < target:
                 low = mid + 1
@@ -55,7 +54,8 @@ class Solution:
                 high = mid - 1
         if arr[high] == target:
             return high
-        return -1   
+        return -1
+
 
 if __name__ == "__main__":
     c = Solution()
@@ -64,7 +64,4 @@ if __name__ == "__main__":
     # print(c.binary_search2([1,3,4,4,5],3))
 
     # print(c.binary_search3([1,3,3,4,5],3))
-    print(c.binary_search4([3,3,3,4,5],3,0))
-
-
-
+    print(c.binary_search4([3, 3, 3, 4, 5], 3, 0))
