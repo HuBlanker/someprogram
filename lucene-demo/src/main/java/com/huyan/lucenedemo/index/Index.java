@@ -159,28 +159,27 @@ public class Index {
 
         Set<SearchArticleVO> result = new HashSet<>();
         String[] fields = {"title", "tags", "content"};
+        BooleanQuery.Builder bb = new BooleanQuery.Builder();
         for (String field : fields) {
-            paddingResultByField(target, result, field);
-            if (result.size() >= 10) {
-                break;
-            }
+            bb.add(new TermQuery(new Term(field, target)), BooleanClause.Occur.SHOULD);
         }
+
+        paddingResultByField(bb.build(), result);
 
         return new ArrayList<>(result);
     }
 
-    private void paddingResultByField(String target, Set<SearchArticleVO> result, String field) throws IOException, InvalidTokenOffsetsException {
+    private void paddingResultByField(BooleanQuery query, Set<SearchArticleVO> result) throws IOException, InvalidTokenOffsetsException {
         // 索引存放的位置...
         Directory d = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
 
         IndexReader indexReader = DirectoryReader.open(d);
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
-        Query query = new TermQuery(new Term(field, target));
 
         // 找到符合条件的前100条数据
         TopDocs topDocs = indexSearcher.search(query, 100);
-        logger.info("search keyword = {}, getNum = {}", target, topDocs.totalHits);
+        logger.info("search keyword = {}, getNum = {}", query, topDocs.totalHits);
 
         QueryScorer scorer = new QueryScorer(query);
         Fragmenter f = new SimpleSpanFragmenter(scorer);

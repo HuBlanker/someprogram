@@ -51,7 +51,7 @@ public class FuncTest {
 
         d = new Document();
         d.add(new NumericDocValuesField("id", 3));
-        d.add(new Field("name", "huy shi", fieldType));
+        d.add(new Field("name", "huy shi ", fieldType));
         iw.addDocument(d);
 
 
@@ -65,7 +65,7 @@ public class FuncTest {
     public void h() throws IOException {
         IndexSearcher is = new IndexSearcher(DirectoryReader.open(ramDirectory));
 
-        Query q = new BooleanQuery.Builder().add(new TermQuery(new Term("name", "huyan")), BooleanClause.Occur.SHOULD)
+        Query q = new BooleanQuery.Builder().add(new TermQuery(new Term("name", "huyan")), BooleanClause.Occur.FILTER)
                 .add(new TermQuery(new Term("name", "shi")), BooleanClause.Occur.SHOULD).build();
         q = new RecencyBoostQuery(q);
 
