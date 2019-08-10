@@ -3,6 +3,8 @@ package daily;
 import mian.AbstractMain;
 import mian.Main;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -43,6 +45,10 @@ public class AtomicTest extends AbstractMain {
         String s = "14:00:00";
         String s1 = "16:00:00";
 
-        System.out.println(s.compareTo(s1));
+//        System.out.println(s.compareTo(s1));
+//        System.out.println(10L << 32 + 87L);
+        Map<String, Integer> a = new HashMap<>();
+        a.put("a", 3);
+        System.out.println(a.get("b"));
     }
 }
