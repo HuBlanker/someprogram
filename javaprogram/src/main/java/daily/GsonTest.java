@@ -3,6 +3,7 @@ package daily;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,8 +70,27 @@ public class GsonTest {
 //        u.name = "huyan";
 //        u.age = 2;
 //        System.out.println(gson.toJson(u));
-    }
 
+        DetailPushInfo d = gson.fromJson("{\"job_id\":35567720,}", DetailPushInfo.class);
+        System.out.println(d);
+    }
+    private static class DetailPushInfo {
+
+        @SerializedName("job_id")
+        int jobId;
+        @SerializedName("push_type")
+        int pushType;
+        @SerializedName("push_keyword")
+        String pushKeyword;
+
+
+        public DetailPushInfo(int jobId, int pushType, String pushKeyword) {
+            this.jobId = jobId;
+            this.pushType = pushType;
+            this.pushKeyword = pushKeyword;
+        }
+
+    }
 
     class User {
         String name;

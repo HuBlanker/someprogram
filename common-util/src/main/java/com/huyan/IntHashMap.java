@@ -38,7 +38,8 @@ public class IntHashMap {
     }
 
     public boolean put(int key, int value) {
-        if (this.size + (this.size >> 1) > keys.length) { // rehash
+        // 扩容以及rehash
+        if (this.size + (this.size >> 1) > keys.length) {
             int[] oldKeys = this.keys;
             int[] oldVals = this.vals;
 
@@ -67,13 +68,14 @@ public class IntHashMap {
                 vals[idx] = value;
                 this.size += 1;
                 return true;
-            } else if (keys[idx] == key) { // replace
+            } else if (keys[idx] == key) {
                 vals[idx] = value;
                 return false;
             }
         }
     }
 
+    // 模仿hashmap的容量计算
     public static int tableSizeFor(int cap) {
         int n = cap - 1;
         n |= n >>> 1;
@@ -84,7 +86,7 @@ public class IntHashMap {
         return (n < 0) ? 1 : n + 1;
     }
 
-    // http://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
+    // hash
     public static int hash(int x) {
         x = ((x >>> 16) ^ x) * 0x45d9f3b;
         x = ((x >>> 16) ^ x) * 0x45d9f3b;
