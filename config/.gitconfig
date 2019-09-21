@@ -1,0 +1,12 @@
+[alias]
+	st = status
+	co = checkout
+	ci = commit
+	br = branch
+	pl = pull
+	ps = push
+	d = diff
+	dc = diff --cached
+[user]
+	email = liupanfeng@kanzhun.com
+	name = liupanfeng
