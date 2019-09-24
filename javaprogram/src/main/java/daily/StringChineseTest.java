@@ -1,5 +1,8 @@
 package daily;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static com.huyan.StringUtils.containChinese;
 
 /**
@@ -7,6 +10,14 @@ import static com.huyan.StringUtils.containChinese;
  */
 public class StringChineseTest {
     public static void main(String[] args) throws InterruptedException {
+        Arrays.asList("Huyan", "Hello", "Coder", "Hi", "Hell", "Intellij")
+                .stream()
+                .filter(s -> s.startsWith("H"))
+                .map(s -> s.substring(2))
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -21,4 +32,5 @@ public class StringChineseTest {
         Thread.sleep(1000000000);
 
     }
+
 }

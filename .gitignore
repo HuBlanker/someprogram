@@ -57,6 +57,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-.DS_Store
+**/.DS_Store
 python/venv
 python/venv3/*
