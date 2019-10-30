@@ -31,6 +31,8 @@ public class LeetCode2 {
 
         ListNode node = new Solution().addTwoNumbers(listNode, listNode3);
         printNode(node);
+
+        printNode(new Solution().rev(node));
     }
 
     private static void printNode(ListNode node) {
@@ -81,6 +83,18 @@ class Solution {
             l2 = l2 == null ? null : l2.next;
         }
         return root.next;
+    }
+
+    public ListNode rev(ListNode node) {
+        if (node == null) return null;
+        ListNode pre = null;
+        while (node != null) {
+            ListNode next = node.next;
+            node.next = pre;
+            pre = node;
+            node = next;
+        }
+        return pre;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

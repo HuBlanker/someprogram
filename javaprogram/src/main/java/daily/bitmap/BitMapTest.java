@@ -1,5 +1,7 @@
 package daily.bitmap;
 
+import java.util.BitSet;
+
 /**
  * Created by pfliu on 2019/07/02.
  */
