@@ -11,7 +11,13 @@ public class BitIntTest extends AbstractMain {
 
 
     public static void main(String[] args) {
-        new BitIntTest().parseArgsAndRun(args);
+//        new BitIntTest().parseArgsAndRun(args);
+        System.out.println("=======");
+
+        long a = (10L << 32) + 20;
+        System.out.println(a >> 32);
+        System.out.println(a & 0xFFFF);
+
     }
 
     @Override
